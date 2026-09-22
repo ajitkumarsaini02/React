@@ -4,11 +4,12 @@ function useCurrencyInfo(currency) {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    fetch(
-      `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${currency}.json`
-    )
+    const normalizedCurrency = currency?.toUpperCase();
+    if (!normalizedCurrency) return;
+
+    fetch(`https://api.frankfurter.app/latest?from=${normalizedCurrency}`)
       .then((res) => res.json())
-      .then((res) => setData(res[currency] || {}))
+      .then((res) => setData(res.rates || {}))
       .catch(() => setData({}));
   }, [currency]);
 
